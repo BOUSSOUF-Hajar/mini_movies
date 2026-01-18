@@ -1,7 +1,7 @@
 <div class="col-12 col-md-6 col-lg-4 mb-4">
     <div class="card h-100">
         <img
-            src="<?= e($movie['poster_url']) ?: 'https://via.placeholder.com/300x450' ?>"
+            src="<?= e($movie['poster_url']) ?: 'https://placehold.co/300x450?text=Movie+Poster' ?>"
             class="card-img-top"
             alt="<?= e($movie['title']) ?>">
 
@@ -20,13 +20,25 @@
                 </a>
 
                 <?php if (isLoggedIn()): ?>
-                    <form method="post" action="favorite.php">
-                        <input type="hidden" name="movie_id" value="<?= $movie['id'] ?>">
-                        <input type="hidden" name="action" value="<?= $movie['is_favorited'] ? 'remove' : 'add' ?>">
-                        <button class="btn btn-sm btn-link text-danger">
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-favorite"
+                        data-movie-id="<?= $movie['id'] ?>"
+                        data-is-favorite="<?= $movie['is_favorited'] ? '1' : '0' ?>"
+                        aria-label="Toggle favorite"
+                    >
+                        <span class="favorite-icon">
                             <?= $movie['is_favorited'] ? '❤️' : '🤍' ?>
-                        </button>
-                    </form>
+                        </span>
+                    </button>
+                <?php else: ?>
+                    <a
+                        href="login.php?return_to=<?= urlencode($_SERVER['REQUEST_URI']) ?>"
+                        class="btn btn-sm btn-outline-danger"
+                        aria-label="Login to favorite"
+                    >
+                        🤍
+                    </a>
                 <?php endif; ?>
             </div>
         </div>

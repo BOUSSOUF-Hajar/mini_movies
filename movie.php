@@ -9,9 +9,22 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 $movieId = (int) $_GET['id'];
 
-/* Movie */
-$stmt = $pdo->prepare("SELECT * FROM movies WHERE id = ?");
-$stmt->execute([$movieId]);
+$stmt = $pdo->prepare("
+    SELECT 
+        m.*,
+        EXISTS (
+            SELECT 1
+            FROM favorites f
+            WHERE f.movie_id = m.id
+              AND f.user_id = ?
+        ) AS is_favorited
+    FROM movies m
+    WHERE m.id = ?
+");
+$stmt->execute([
+    $_SESSION['user_id'] ?? 0,
+    $movieId
+]);
 $movie = $stmt->fetch();
 
 if (!$movie) {
@@ -39,7 +52,7 @@ include './partials/header.php';
         <!-- Poster -->
         <div class="col-md-4">
             <img
-                src="<?= e($movie['poster_url']) ?: 'https://via.placeholder.com/300x450' ?>"
+                src="<?= e($movie['poster_url']) ?: 'https://placehold.co/300x450?text=Movie+Poster' ?>"
                 class="img-fluid rounded"
                 alt="<?= e($movie['title']) ?>">
         </div>
@@ -58,16 +71,19 @@ include './partials/header.php';
             <p><?= nl2br(e($movie['description'])) ?></p>
 
             <?php if (isLoggedIn()): ?>
-                <form method="post" action="favorite.php" class="d-inline">
-                    <input type="hidden" name="movie_id" value="<?= $movieId ?>">
-                    <input type="hidden" name="action" value="<?= $isFavorited ? 'remove' : 'add' ?>">
-
-                    <button class="btn <?= $isFavorited ? 'btn-danger' : 'btn-outline-danger' ?>">
-                        <?= $isFavorited ? '❤️ Unfavorite' : '🤍 Favorite' ?>
+                <button
+                        type="button"
+                        class="btn btn-sm btn-favorite"
+                        data-movie-id="<?= $movie['id'] ?>"
+                        data-is-favorite="<?= $movie['is_favorited'] ? '1' : '0' ?>"
+                        aria-label="Toggle favorite"
+                    >
+                        <span class="favorite-icon">
+                            <?= $movie['is_favorited'] ? '❤️' : '🤍' ?>
+                        </span>
                     </button>
-                </form>
             <?php else: ?>
-                <a href="login.php" class="btn btn-outline-secondary">
+                <a href="login.php?return_to=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-outline-secondary">
                     Login to favorite
                 </a>
             <?php endif; ?>

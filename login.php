@@ -1,5 +1,6 @@
 
 <?php require './config/database.php';
+include './partials/header.php';
 if ($_POST) {
   $stmt=$pdo->prepare("SELECT * FROM users WHERE email=?");
   $stmt->execute([$_POST['email']]);
@@ -9,7 +10,7 @@ if ($_POST) {
     header("Location: movies.php"); exit;
   }
 }
-include './partials/header.php'; ?>
+?>
 <form method="post" class="container mt-5">
 <input name="email" class="form-control mb-2" placeholder="Email">
 <input name="password" type="password" class="form-control mb-2" placeholder="Password">

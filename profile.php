@@ -16,11 +16,14 @@ $user = $stmt->fetch();
 
 /* Favorites */
 $stmt = $pdo->prepare("
-    SELECT m.*
+    SELECT 
+        m.*,
+        1 AS is_favorited
     FROM movies m
     JOIN favorites f ON f.movie_id = m.id
     WHERE f.user_id = ?
 ");
+
 $stmt->execute([$userId]);
 $favorites = $stmt->fetchAll();
 
