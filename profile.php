@@ -52,7 +52,7 @@ include './partials/header.php';
     </div>
 
     <!-- Favorites list -->
-    <h4 class="mb-3">❤️ My Favorite Movies</h4>
+    <h4 class="mb-3">My Favorite Movies</h4>
 
     <?php if ($favoritesCount === 0): ?>
         <p class="text-muted">You have no favorite movies yet.</p>
