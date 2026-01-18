@@ -1,6 +1,7 @@
 <?php
 require './config/database.php';
 require './core/helpers.php';
+require './core/csrf.php';
 
 if (!isLoggedIn()) {
     header('Location: login.php');
@@ -10,6 +11,11 @@ if (!isLoggedIn()) {
 $userId = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    /* CSRF */
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        http_response_code(403);
+        exit('Invalid CSRF token');
+    }
     $name = trim($_POST['name']);
 
     if ($name !== '') {
@@ -42,6 +48,7 @@ include './partials/header.php';
                 value="<?= e($user['name']) ?>"
                 required
             >
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
         </div>
 
         <button class="btn btn-success">Save</button>

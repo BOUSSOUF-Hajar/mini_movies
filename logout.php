@@ -1,5 +1,6 @@
 <?php
 require './config/database.php';
+require './core/csrf.php';
 
 /* Destroy session */
 session_unset();

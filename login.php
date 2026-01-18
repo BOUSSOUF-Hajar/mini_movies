@@ -1,7 +1,12 @@
 
 <?php require './config/database.php';
-include './partials/header.php';
+require './core/csrf.php';
 if ($_POST) {
+  /* CSRF */
+  if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+    http_response_code(403);
+    exit('Invalid CSRF token');
+}
   $stmt=$pdo->prepare("SELECT * FROM users WHERE email=?");
   $stmt->execute([$_POST['email']]);
   $u=$stmt->fetch();
@@ -10,10 +15,12 @@ if ($_POST) {
     header("Location: movies.php"); exit;
   }
 }
+include './partials/header.php';
 ?>
 <form method="post" class="container mt-5">
 <input name="email" class="form-control mb-2" placeholder="Email">
 <input name="password" type="password" class="form-control mb-2" placeholder="Password">
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token()) ?>">
 <button class="btn btn-primary">Login</button>
 </form>
 <?php include './partials/footer.php'; ?>

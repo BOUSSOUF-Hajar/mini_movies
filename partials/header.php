@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-<?php 
-    require './core/csrf.php';
-?>
 <head>
     <meta charset="UTF-8">
     <meta name="csrf-token" content="<?= csrf_token() ?>">

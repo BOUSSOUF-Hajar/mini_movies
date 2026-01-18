@@ -1,6 +1,7 @@
 <?php
 require './config/database.php';
 require './core/helpers.php';
+require './core/csrf.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     http_response_code(404);

@@ -1,6 +1,7 @@
 <?php
 require './config/database.php';
 require './core/helpers.php';
+require './core/csrf.php';
 
 $userId = $_SESSION['user_id'] ?? null;
 
