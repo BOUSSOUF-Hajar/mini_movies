@@ -4,6 +4,7 @@ session_start();
 require './config/config.php';
 require './core/database.php';
 require './core/csrf.php';
+require './core/helpers.php';
 require './core/Router.php';
 
 $router = new Router();
@@ -15,5 +16,9 @@ $router->get('logout', 'AuthController@logout');
 
 $router->get('movies', 'MovieController@index');
 $router->get('movies/(\d+)', 'MovieController@show');
+
+$router->get('profile', 'ProfileController@index');
+$router->get('profile/edit', 'ProfileController@edit');
+$router->post('profile/edit', 'ProfileController@update');
 
 $router->dispatch();

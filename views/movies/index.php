@@ -3,7 +3,7 @@
 <div class="container mt-4">
 
     <!-- Filters -->
-    <form class="row g-2 mb-4" method="get" action="/movies">
+    <form class="row g-2 mb-4" method="get" action="/movies/movies">
 
         <div class="col-md-4">
             <input type="text"

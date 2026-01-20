@@ -18,11 +18,11 @@ require_once __DIR__ . '/../core/helpers.php';
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/movies/movies.php">Home</a>
+                    <a class="nav-link" href="/movies/movies">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="/movies/movies.php">Movies</a>
+                    <a class="nav-link" href="/movies/movies">Movies</a>
                 </li>
             </ul>
 
@@ -30,7 +30,7 @@ require_once __DIR__ . '/../core/helpers.php';
             <ul class="navbar-nav">
                 <?php if (isLoggedIn()): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/movies/profile.php">Profile</a>
+                        <a class="nav-link" href="/movies/profile">Profile</a>
                     </li>
 
                     <li class="nav-item">
@@ -38,11 +38,11 @@ require_once __DIR__ . '/../core/helpers.php';
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/movies/login.php">Login</a>
+                        <a class="nav-link" href="/movies/login">Login</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/movies/register.php">Register</a>
+                        <a class="nav-link" href="/movies/register">Register</a>
                     </li>
                 <?php endif; ?>
             </ul>
