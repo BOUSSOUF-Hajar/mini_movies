@@ -9,6 +9,9 @@ require './core/Router.php';
 
 $router = new Router();
 
+$router->get('register', 'AuthController@showRegisterForm');
+$router->post('register', 'AuthController@register');
+
 $router->get('login', 'AuthController@login');
 $router->post('login', 'AuthController@login');
 

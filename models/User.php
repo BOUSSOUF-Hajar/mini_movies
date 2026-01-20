@@ -7,6 +7,18 @@ class User {
         $this->db = Database::getInstance();
     }
 
+    public function existsByEmail(string $email): bool {
+        $stmt = $this->db->prepare("SELECT 1 FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        return (bool) $stmt->fetch();
+    }
+
+    public function create(string $name, string $email, string $password) {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("INSERT INTO users (name,email,password_hash) VALUES (?, ?, ?)");
+        $stmt->execute([$name, $email, $hash]);
+    }
+
     public function findByEmail(string $email) {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
         $stmt->execute([$email]);

@@ -4,6 +4,57 @@ require './models/User.php';
 
 class AuthController
 {
+    public function showRegisterForm() {
+        require './views/auth/register.php';
+    }
+
+    public function register() {
+
+        if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+            http_response_code(403);
+            exit('Invalid CSRF token');
+        }
+
+        $name     = trim($_POST['name'] ?? '');
+        $email    = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+        $errors   = [];
+
+        // Validation
+        if ($name === '') {
+            $errors['name'] = "Le nom est requis.";
+        }
+
+        if ($email === '') {
+            $errors['email'] = "L'email est requis.";
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = "L'email n'est pas valide.";
+        }
+
+        if ($password === '') {
+            $errors['password'] = "Le mot de passe est requis.";
+        } elseif (strlen($password) < 6) {
+            $errors['password'] = "Le mot de passe doit contenir au moins 6 caractères.";
+        }
+
+        $userModel = new User();
+
+        if ($userModel->existsByEmail($email)) {
+            $errors['email'] = "Cet email est déjà utilisé.";
+        }
+
+        if ($errors) {
+            require './views/auth/register.php';
+            return;
+        }
+
+        // Création utilisateur
+        $userModel->create($name, $email, $password);
+
+        // Redirection vers login
+        header('Location: /Movies/login');
+        exit;
+    }
 
     public function login()
     {
