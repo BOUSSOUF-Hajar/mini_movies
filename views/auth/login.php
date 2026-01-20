@@ -1,4 +1,4 @@
-<?php include '../partials/header.php'; ?>
+<?php include './partials/header.php'; ?>
 
 <div class="d-flex justify-content-center align-items-center vh-100">
     <form method="post" class="w-100" style="max-width: 400px;">
@@ -30,4 +30,4 @@
     </form>
 </div>
 
-<?php include '../partials/footer.php'; ?>
+<?php include './partials/footer.php'; ?>

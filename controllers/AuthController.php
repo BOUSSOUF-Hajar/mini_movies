@@ -1,10 +1,12 @@
 <?php
 
-require '../app/models/User.php';
+require './models/User.php';
 
-class AuthController {
+class AuthController
+{
 
-    public function login() {
+    public function login()
+    {
         $errors = [];
 
         if ($_POST) {
@@ -41,6 +43,32 @@ class AuthController {
             }
         }
 
-        require '../app/views/auth/login.php';
+        require './views/auth/login.php';
+    }
+    public function logout()
+    {
+
+        // Optionnel : protection CSRF si POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+                http_response_code(403);
+                exit('Invalid CSRF token');
+            }
+        }
+
+        // Supprimer toutes les variables de session
+        $_SESSION = [];
+
+        // Détruire la session
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
+
+        // Redémarrer une session propre
+        session_start();
+        session_regenerate_id(true);
+
+        header('Location: /login');
+        exit;
     }
 }

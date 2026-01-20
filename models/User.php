@@ -4,7 +4,7 @@ class User {
     private $db;
 
     public function __construct() {
-        $this->db = Database::get();
+        $this->db = Database::getInstance();
     }
 
     public function findByEmail(string $email) {
