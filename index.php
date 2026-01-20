@@ -21,4 +21,7 @@ $router->get('profile', 'ProfileController@index');
 $router->get('profile/edit', 'ProfileController@edit');
 $router->post('profile/edit', 'ProfileController@update');
 
+$router->post('movies/(\d+)/favorite', 'MovieController@favorite');
+$router->post('movies/(\d+)/unfavorite', 'MovieController@unfavorite');
+
 $router->dispatch();

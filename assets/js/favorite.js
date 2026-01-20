@@ -6,7 +6,7 @@ document.addEventListener('click', async function (e) {
     const isFavorite = btn.dataset.isFavorite === '1';
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    const url = isFavorite ? '/movies/unfavorite.php' : '/movies/favorite.php';
+    const url =  '/movies/movies/'+ movieId + (isFavorite ? '/unfavorite' : '/favorite');
 
     try {
         const res = await fetch(url, {
@@ -14,19 +14,21 @@ document.addEventListener('click', async function (e) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-                movie_id: movieId,
-                csrf_token: csrfToken
-            })
+            body: `csrf_token=${csrfToken}`
         });
 
         if (!res.ok) throw new Error('Request failed');
 
         //Rander html
-        btn.dataset.isFavorite = isFavorite ? '0' : '1';
+        const data = await res.json();
 
-        btn.querySelector('.favorite-icon').textContent =
-            isFavorite ? '🤍' : '❤️';
+        if (data.status === 'added') {
+            btn.dataset.isFavorite = '1';
+            btn.querySelector('.favorite-icon').textContent = '❤️';
+        } else {
+            btn.dataset.isFavorite = '0';
+            btn.querySelector('.favorite-icon').textContent = '🤍';
+        }
 
     } catch (err) {
         alert('Error, please try again');

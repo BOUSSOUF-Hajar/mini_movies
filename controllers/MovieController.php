@@ -1,6 +1,7 @@
 <?php
 
 require './models/Movie.php';
+require './models/Favorite.php';
 
 class MovieController
 {
@@ -54,5 +55,51 @@ class MovieController
         }
 
         require './views/movies/show.php';
+    }
+    public function favorite($movieId) {
+        $this->toggleFavorite($movieId, true);
+    }
+
+    public function unfavorite($movieId) {
+        $this->toggleFavorite($movieId, false);
+    }
+
+    private function toggleFavorite(int $movieId, bool $add) {
+
+        if (!isLoggedIn()) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Not logged in']);
+            exit;
+        }
+
+        if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Invalid CSRF token']);
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $fav = new Favorite();
+
+        // Vérifie que le film existe
+        if (!$fav->movieExists($movieId)) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Movie not found']);
+            exit;
+        }
+
+        if ($add) {
+            $fav->add($userId, $movieId);
+            $status = 'added';
+        } else {
+            $fav->remove($userId, $movieId);
+            $status = 'removed';
+        }
+
+        echo json_encode([
+            'status' => $status,
+            'movie_id' => $movieId
+        ]);
+        exit;
     }
 }
