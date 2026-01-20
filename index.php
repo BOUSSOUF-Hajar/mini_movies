@@ -27,4 +27,13 @@ $router->post('profile/edit', 'ProfileController@update');
 $router->post('movies/(\d+)/favorite', 'MovieController@favorite');
 $router->post('movies/(\d+)/unfavorite', 'MovieController@unfavorite');
 
+//ADMIN
+$router->get('admin/movies', 'AdminMovieController@index');
+$router->get('admin/movies/create', 'AdminMovieController@create');
+$router->post('admin/movies/create', 'AdminMovieController@store');
+$router->get('admin/movies/(\d+)/edit', 'AdminMovieController@edit');
+$router->post('admin/movies/(\d+)/edit', 'AdminMovieController@update');
+$router->post('admin/movies/(\d+)/delete', 'AdminMovieController@delete');
+
+
 $router->dispatch();

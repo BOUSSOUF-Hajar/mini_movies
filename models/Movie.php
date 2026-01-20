@@ -10,6 +10,31 @@ class Movie
         $this->db = Database::getInstance();
     }
 
+    public function all() {
+        return $this->db->query("SELECT * FROM movies ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function find(int $id) {
+        $stmt = $this->db->prepare("SELECT * FROM movies WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function create(string $title, string $genre, int $year, float $rating) {
+        $stmt = $this->db->prepare("INSERT INTO movies (title, genre, release_year, rating) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$title, $genre, $year, $rating]);
+    }
+
+    public function update(int $id, string $title, string $genre, int $year, float $rating) {
+        $stmt = $this->db->prepare("UPDATE movies SET title=?, genre=?, release_year=?, rating=? WHERE id=?");
+        $stmt->execute([$title, $genre, $year, $rating, $id]);
+    }
+
+    public function delete(int $id) {
+        $stmt = $this->db->prepare("DELETE FROM movies WHERE id=?");
+        $stmt->execute([$id]);
+    }
+
     public function getAll(array $filters)
     {
 
