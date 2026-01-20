@@ -13,4 +13,7 @@ $router->post('login', 'AuthController@login');
 
 $router->get('logout', 'AuthController@logout');
 
+$router->get('movies', 'MovieController@index');
+$router->get('movies/(\d+)', 'MovieController@show');
+
 $router->dispatch();

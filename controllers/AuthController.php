@@ -35,7 +35,7 @@ class AuthController
 
                 if ($user && password_verify($password, $user['password_hash'])) {
                     $_SESSION['user_id'] = $user['id'];
-                    header("Location: /movies");
+                    header("Location: /movies/movies");
                     exit;
                 } else {
                     $errors['login'] = "Email ou mot de passe incorrect.";
@@ -48,17 +48,6 @@ class AuthController
     public function logout()
     {
 
-        // Optionnel : protection CSRF si POST
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!verify_csrf($_POST['csrf_token'] ?? '')) {
-                http_response_code(403);
-                exit('Invalid CSRF token');
-            }
-        }
-
-        // Supprimer toutes les variables de session
-        $_SESSION = [];
-
         // Détruire la session
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
@@ -68,7 +57,7 @@ class AuthController
         session_start();
         session_regenerate_id(true);
 
-        header('Location: /login');
+        header('Location: /movies/login');
         exit;
     }
 }

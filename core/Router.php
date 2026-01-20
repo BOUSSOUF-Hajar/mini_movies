@@ -13,18 +13,26 @@ class Router {
     }
 
     public function dispatch() {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $uri = trim($_GET['url'] ?? '', '/');
 
-        if (!isset($this->routes[$method][$uri])) {
-            http_response_code(404);
-            echo "404 - Page not found";
+    $method = $_SERVER['REQUEST_METHOD'];
+    $uri = trim($_GET['url'] ?? '', '/');
+
+    foreach ($this->routes[$method] ?? [] as $route => $action) {
+
+        if (preg_match("#^$route$#", $uri, $matches)) {
+
+            array_shift($matches);
+
+            [$controller, $methodAction] = explode('@', $action);
+
+            require "./controllers/$controller.php";
+            (new $controller)->$methodAction(...$matches);
             return;
         }
-
-        [$controller, $methodAction] = explode('@', $this->routes[$method][$uri]);
-
-        require "./controllers/$controller.php";
-        (new $controller)->$methodAction();
     }
+
+    http_response_code(404);
+    echo '404 - Page not found';
+}
+
 }

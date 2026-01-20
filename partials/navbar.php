@@ -34,11 +34,7 @@ require_once __DIR__ . '/../core/helpers.php';
                     </li>
 
                     <li class="nav-item">
-                        <form method="post" action="/movies/logout.php" class="d-inline">
-                            <button class="btn btn-outline-light btn-sm ms-2 mt-1">
-                                Logout
-                            </button>
-                        </form>
+                        <a href="/movies/logout" class="btn btn-outline-light btn-sm ms-2 mt-1"> Logout</a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
