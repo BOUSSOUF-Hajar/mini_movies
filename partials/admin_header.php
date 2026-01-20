@@ -12,8 +12,8 @@ if (!isAdmin()) {
         <a class="navbar-brand" href="/admin/index.php">Admin Panel</a>
 
         <div class="d-flex ms-auto">
-            <a href="/movies/movies.php" class="btn btn-outline-light me-2">Home</a>
-            <a href="/movies/logout.php" class="btn btn-outline-danger">Logout</a>
+            <a href="/movies/movies" class="btn btn-outline-light me-2">Home</a>
+            <a href="/movies/logout" class="btn btn-outline-danger">Logout</a>
         </div>
     </div>
 </nav>

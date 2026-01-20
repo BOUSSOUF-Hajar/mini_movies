@@ -2,7 +2,8 @@
     <div class="card h-100">
         <img
             src="<?= e($movie['poster_url']) ?: 'https://placehold.co/300x450?text=Movie+Poster' ?>"
-            class="card-img-top"
+            class="card-img-top object-fit-cover"
+            style="max-height:420px;"
             alt="<?= e($movie['title']) ?>">
 
         <div class="card-body">
